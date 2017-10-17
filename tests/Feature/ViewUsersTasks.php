@@ -19,11 +19,22 @@ class ViewUsersTasks extends TestCase
         // Prepare
 
         $user = factory(User::class)->create();
-        $task = factory(Task::class, 5)->create();
+        $tasks = factory(Task::class, 10)->create();
+        $user->tasks()->saveMany($tasks);
 
         // Execute
 
-        $this->get('user/{user}/tasks');
+        $response = $this->get('user/'.$user->id.'/tasks');
+
+        $response->assertSuccessful();
+        $response->assertViewIs('user_tasks');
+        $response->assertViewHas('tasks', $user->taks);
+
+        $response->assertSeeText($user->name . 'Tasks: ');
+
+        foreach($tasks as $task){
+            $response->assertSeeText($task->name);
+        }
 
         // Comprovacions
 
