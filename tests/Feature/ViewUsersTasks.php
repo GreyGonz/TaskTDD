@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Task;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,13 +25,16 @@ class ViewUsersTasks extends TestCase
 
         // Execute
 
+        $this->withoutExceptionHandling();
+
         $response = $this->get('user/'.$user->id.'/tasks');
 
         $response->assertSuccessful();
         $response->assertViewIs('user_tasks');
-        $response->assertViewHas('tasks', $user->taks);
+        $response->assertViewHas('tasks', $user->tasks);
+        $response->assertViewHas('user', $user);
 
-        $response->assertSeeText($user->name . 'Tasks: ');
+        $response->assertSeeText($user->name . ' Tasks:');
 
         foreach($tasks as $task){
             $response->assertSeeText($task->name);
