@@ -10,7 +10,7 @@ class UserTasksController extends Controller
 {
     public function index(User $user)
     {
-        $user = User::findOrFail($user);
+//        $user = User::findOrFail($user);
 //        $tasks = Task::all();
         $tasks = Task::where('user_id', $user->id)->get();
         return view('user_tasks', ['tasks' => $tasks, 'user' => $user]);

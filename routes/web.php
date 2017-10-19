@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('user/{id}/tasks', 'UserTasksController@index');
+
+Route::get('user/{$user}/tasks', 'UserTasksController@index');
